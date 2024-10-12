@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lavandaria"
+version = "0.0.1"
+dependencies = [
+    "fastapi>=0.115.2",
+    "python-dotenv>=1.0.1",
+    "requests>=2.32.3",
+    "sqlalchemy>=2.0.35",
+    "uvicorn>=0.31.1",
+]
+
+[tool.setuptools.packages]
+find = {}
+
+[project.scripts]
+rmm-api-lavandaria = "rmm.lavandaria.app:run"
+
+[tool.ruff]
+lint.extend-select = ["I"]
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.11.2",
+    "ruff>=0.6.9",
+]
+
+[tool.uv.workspace]
+members = ["teste"]
