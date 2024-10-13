@@ -1,16 +1,20 @@
-from pydantic.dataclasses import dataclass
+from rmm_core.db import BaseModel
+from sqlalchemy import String, Integer
+from sqlalchemy.orm import Mapped, mapped_column
 
 
-@dataclass
-class DeviceStatus:
-    label: str
-    status: str
-    completionTime: str
-    healthStatus: str
-    healthUpdated: str
+class DeviceStatus(BaseModel):
+    __tablename__ = "device_status"
+
+    label: Mapped[str] = mapped_column(String(64), primary_key=True)
+    status: Mapped[str] = mapped_column(String(8))
+    completionTime: Mapped[str] = mapped_column(String(64))
+    healthStatus: Mapped[str] = mapped_column(String(8))
+    healthUpdated: Mapped[str] = mapped_column(String(64))
 
 
-@dataclass
-class DevicesStatusResponse:
-    washers: list[DeviceStatus]
-    dryers: list[DeviceStatus]
+class Fetches(BaseModel):
+    __tablename__ = "fetches"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    lastUpdated: Mapped[str] = mapped_column(String(64))
