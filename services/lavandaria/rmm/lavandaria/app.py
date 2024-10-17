@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from rmm.lavandaria.router import router
+from rmm.lavandaria.setup import setup
 
 app = FastAPI(
     title="API da Lavandaria",
@@ -14,6 +15,7 @@ app.include_router(router)
 
 
 def run() -> None:
+    setup()
     uvicorn.run("rmm.lavandaria.app:app", host="localhost", port=8000, reload=True)
 
 

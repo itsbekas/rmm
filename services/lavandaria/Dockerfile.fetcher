@@ -1,0 +1,8 @@
+FROM ghcr.io/astral-sh/uv:alpine
+WORKDIR /app
+COPY pyproject.toml .
+COPY uv.lock .
+COPY rmm/lavandaria rmm/lavandaria
+RUN uv venv
+RUN uv pip install .
+CMD ["uv", "run", "rmm-fetcher-lavandaria"]
