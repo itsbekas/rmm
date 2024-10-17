@@ -21,5 +21,4 @@ def setup_periodic_tasks(sender, **kwargs):
 
 @app.task
 def get_devices():
-    print("teste")
     return fetch_device_status()

@@ -1,0 +1,41 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_DATABASE: rmm
+      MYSQL_USER: rmm
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  api:
+    build:
+      context: services/lavandaria/
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mariadb
+
+  fetcher:
+    build:
+      context: services/lavandaria/
+      dockerfile: Dockerfile.fetcher
+    depends_on:
+      - mariadb
+
+  frontend:
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  mariadb_data:
+    driver: local
