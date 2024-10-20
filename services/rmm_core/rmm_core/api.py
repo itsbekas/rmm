@@ -8,6 +8,23 @@ from sqlalchemy.orm import Session
 from .db import Session as DatabaseSession
 from .util import get_env
 
+from pydantic import BaseModel, ConfigDict
+
+def to_camel(str):
+    output = ''.join(x for x in str.title() if x.isalnum())
+    return output[0].lower() + output[1:]
+
+class ResponseModel(BaseModel):
+    """
+    Base response model for all API responses.
+    Converts snake_case to camelCase.
+    """
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+        from_attributes=True,
+    )
+
 
 def get_app(router: APIRouter, name: str) -> tuple[FastAPI, str, int]:
     HOST: str = get_env("UVICORN_HOST")

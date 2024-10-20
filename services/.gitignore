@@ -11,5 +11,6 @@ test.env
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+build/
 
 celerybeat-schedule

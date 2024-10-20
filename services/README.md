@@ -15,5 +15,5 @@ rmm-setup-<service-name>
 # Run the API:
 rmm-api-<service-name>
 # Run the task scheduler:
-celery -A rmm.<service-name>.tasks worker --loglevel=info
-celery -A rmm.<service-name>.tasks beat --loglevel=info
+celery -A rmm.<service-name>.scheduler worker --loglevel=info
+celery -A rmm.<service-name>.scheduler beat --loglevel=info
