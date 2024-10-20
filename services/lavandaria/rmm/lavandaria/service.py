@@ -59,13 +59,18 @@ def fetch_device_status() -> None:
             # If the device is already in the database, update its status
             # Otherwise, add it to the database
             if db_device:
-                db_device.state = device.state
-                db_device.completion_time = device.completion_time
                 db_device.online = device.online
                 if device.online:
+                    db_device.state = device.state
+                    db_device.completion_time = device.completion_time
                     db_device.last_seen = device.last_seen
             else:
-                session.add(DeviceStatus(**device.dict()))
+                db_status = DeviceStatus(**device.dict())
+                # If new device is offline, hard set state to stop
+                if not device.online:
+                    db_status.state = "stop"
+                    db_status.completion_time = dt.datetime(1970, 1, 1)
+                session.add(db_status)
 
         db_fetches = session.query(Fetches).first()
         if db_fetches:
