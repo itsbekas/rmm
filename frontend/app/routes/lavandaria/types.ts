@@ -1,9 +1,9 @@
 export interface DeviceStatus {
     label: string;
-    status: "run" | "pause" | "stop";
+    state: "run" | "pause" | "stop";
     completionTime: string;
-    healthStatus: "ONLINE" | "OFFLINE";
-    healthUpdated: string;
+    online: "ONLINE" | "OFFLINE";
+    lastSeen: string;
 }
 
 export interface StatusData {

@@ -23,18 +23,23 @@ const OfflineCard: React.FC<{ device: DeviceStatus }> = ({ device }) => (
   </>
 );
 
-const DeviceCard: React.FC<{ label: string, status: string, completionTime: string, healthStatus: string, healthUpdated: string }> = ({ label, status, completionTime, healthStatus, healthUpdated }) => (
+const DeviceCard: React.FC<{ device: DeviceStatus }> = ({ device }) => (
   <>
-    <h3 className="text-xl font-bold">{label}</h3>
-    {status === 'run' ? (
+    <h3 className="text-xl font-bold">{device.label}</h3>
+    {device.state === 'run' ? (
       <p className="text-yellow-600">A lavar/secar</p>
     ) : (
       <p className="text-green-600">Vazia/Terminada</p>
     )}
     {/* <p>Completion Time: {dayjs(completionTime).format('MMMM D, YYYY h:mm A')}</p> */}
-    {status === 'run' && (
-      <p>Tempo restante: {dayjs(completionTime).fromNow(true)}</p>
+    {device.state === 'run' && (
+      <p>Tempo restante: {dayjs(device.completionTime).fromNow(true)}</p>
     )}
+    {!device.online && 
+      <>
+        <p className="text-xs"><span className="text-red-600">Sem conexão</span> - Última atualização: {dayjs(device.lastSeen).fromNow()}</p>
+      </>
+    }
   </>
 );
 
@@ -52,17 +57,7 @@ export const DeviceStatusCard: React.FC<{ title: string, devices: DeviceStatus[]
         {devices.map((device, index) => (
           <div key={index}>
             <div className="mb-4">
-              {device.healthStatus === 'OFFLINE' ? (
-                <OfflineCard device={device} />
-              ) : (
-                <DeviceCard
-                  label={device.label}
-                  status={device.status}
-                  completionTime={device.completionTime}
-                  healthStatus={device.healthStatus}
-                  healthUpdated={device.healthUpdated}
-                />
-              )}
+              <DeviceCard device={device} />
             </div>
             {/* Separator between each device except the last one */}
             {index < devices.length - 1 && <Separator className="my-4" />}
